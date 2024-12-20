@@ -1,39 +1,51 @@
 ﻿@model TestePratico.Models.Pessoa
 
+<!-- Título da página -->
 <h2>Detalhe da Pessoa</h2>
 
+<!-- Exibição de mensagens de sucesso -->
 @if (ViewBag.Message != null)
 {
-        <div class="alert alert-success" role="alert">
+    <div class="alert alert-success" role="alert">
         @ViewBag.Message
-        </div>
+    </div>
 }
 
+<!-- Formulário para detalhes da pessoa -->
 <form asp-action="Detalhe" method="post" class="form-container">
+    <!-- Campo para Código, somente leitura -->
     <div class="form-group">
         <label for="PessoaId">Código</label>
         <input type="text" class="form-control" id="PessoaId" asp-for="PessoaId" readonly />
     </div>
 
+    <!-- Campo para Nome Fantasia -->
     <div class="form-group">
         <label for="NomeFantasia">Nome Fantasia</label>
         <input type="text" class="form-control" id="NomeFantasia" asp-for="NomeFantasia" />
     </div>
 
+    <!-- Campo para CNPJ/CPF, somente leitura -->
     <div class="form-group">
         <label for="CnpjCpf">CNPJ/CPF</label>
         <input type="text" class="form-control" id="CnpjCpf" asp-for="CnpjCpf" readonly />
     </div>
 
+    <!-- Botão para gravar alterações -->
     <button type="submit" class="btn btn-primary">Gravar</button>
+
+    <!-- Botão para sair da edição e redirecionar para a página principal -->
     <a asp-action="Index" class="btn btn-secondary">Sair</a>
 </form>
 
 <style>
+    /* Estilização geral do título */
     h2 {
         text-align: center;
         margin-bottom: 20px;
     }
+
+    /* Estilização do formulário */
     .form-container {
         width: 50%;
         margin: 0 auto;
@@ -42,18 +54,26 @@
         border-radius: 10px;
         background-color: #f9f9f9;
     }
+
+    /* Estilização dos grupos de formulário */
     .form-group {
         margin-bottom: 15px;
     }
-    .form-group label {
-        font-weight: bold;
-    }
+
+        /* Estilização do rótulo */
+        .form-group label {
+            font-weight: bold;
+        }
+
+    /* Estilização dos campos de entrada */
     .form-control {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
     }
+
+    /* Estilização do botão primário */
     .btn-primary {
         background-color: #007bff;
         border: none;
@@ -62,9 +82,13 @@
         color: white;
         cursor: pointer;
     }
-    .btn-primary:hover {
-        background-color: #0056b3;
-    }
+
+        /* Alteração de estilo ao passar o mouse sobre o botão primário */
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    /* Estilização do botão secundário */
     .btn-secondary {
         background-color: #6c757d;
         border: none;
@@ -73,9 +97,13 @@
         color: white;
         cursor: pointer;
     }
-    .btn-secondary:hover {
-        background-color: #5a6268;
-    }
+
+        /* Alteração de estilo ao passar o mouse sobre o botão secundário */
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+    /* Estilização de alertas */
     .alert {
         width: 50%;
         margin: 20px auto;
@@ -83,5 +111,6 @@
     }
 </style>
 
+<!-- Bibliotecas externas para jQuery e Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>

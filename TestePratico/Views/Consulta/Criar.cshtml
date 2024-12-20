@@ -1,28 +1,37 @@
 ﻿@model TestePratico.Models.Pessoa
 
+<!-- Título da página -->
 <h2>Criar Nova Pessoa</h2>
 
+<!-- Formulário para criar nova pessoa -->
 <form asp-action="Criar" method="post" class="form-container">
+    <!-- Campo para o Nome Fantasia -->
     <div class="form-group">
         <label for="NomeFantasia">Nome Fantasia</label>
         <input type="text" id="NomeFantasia" name="NomeFantasia" class="form-control" required>
     </div>
 
+    <!-- Campo para o CNPJ/CPF -->
     <div class="form-group">
         <label for="CnpjCpf">CNPJ/CPF</label>
         <input type="text" id="CnpjCpf" name="CnpjCpf" class="form-control" required>
     </div>
 
+    <!-- Botão para enviar o formulário -->
     <button type="submit" class="btn btn-primary">Cadastrar</button>
+
+    <!-- Botão para cancelar e redirecionar para a página principal -->
     <a href="@Url.Action("Index", "Consulta")" class="btn btn-secondary">Cancelar</a>
 </form>
 
 <style>
+    /* Estilização geral do título */
     h2 {
         text-align: center;
         margin-bottom: 20px;
     }
 
+    /* Estilização do formulário */
     .form-container {
         width: 50%;
         margin: 0 auto;
@@ -32,14 +41,17 @@
         background-color: #f9f9f9;
     }
 
+    /* Estilização dos grupos de formulário */
     .form-group {
         margin-bottom: 15px;
     }
 
+        /* Estilização do rótulo */
         .form-group label {
             font-weight: bold;
         }
 
+    /* Estilização dos campos de entrada */
     .form-control {
         width: 100%;
         padding: 10px;
@@ -47,6 +59,7 @@
         border-radius: 5px;
     }
 
+    /* Estilização do botão primário */
     .btn-primary {
         background-color: #007bff;
         border: none;
@@ -56,10 +69,12 @@
         cursor: pointer;
     }
 
+        /* Alteração de estilo ao passar o mouse sobre o botão primário */
         .btn-primary:hover {
             background-color: #0056b3;
         }
 
+    /* Estilização do botão secundário */
     .btn-secondary {
         background-color: #6c757d;
         border: none;
@@ -69,10 +84,12 @@
         cursor: pointer;
     }
 
+        /* Alteração de estilo ao passar o mouse sobre o botão secundário */
         .btn-secondary:hover {
             background-color: #5a6268;
         }
 
+    /* Estilização de alertas */
     .alert {
         width: 50%;
         margin: 20px auto;
@@ -80,5 +97,6 @@
     }
 </style>
 
+<!-- Bibliotecas externas para jQuery e Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
