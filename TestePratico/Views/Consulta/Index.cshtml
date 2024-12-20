@@ -1,0 +1,118 @@
+﻿@model IEnumerable<TestePratico.Models.Pessoa>
+
+<h1 style="text-align: center;">Consulta de Pessoa</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!-- Botão para adicionar nova pessoa -->
+<div class="text-end mb-3">
+    <a asp-action="Criar" class="btn btn-success">Adicionar</a>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Nome Fantasia</th>
+            <th>CNPJ/CPF</th>
+            <th style="text-align: center;">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pessoa in Model)
+        {
+            <tr data-id="@pessoa.PessoaId">
+                <td>@pessoa.NomeFantasia</td>
+                <td>@pessoa.CnpjCpf</td>
+                <td style="text-align: center;">
+                    <a class="btn btn-info" asp-action="Detalhe" asp-route-id="@pessoa.PessoaId">Detalhes</a>
+
+                    <!-- Formulário de exclusão -->
+                    <form asp-action="Excluir" method="post" style="display:inline;" onsubmit="return confirm('Você deseja excluir esta pessoa?');">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <input type="hidden" name="id" value="@pessoa.PessoaId" />
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+    }
+
+        .table th, .table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    .btn-info {
+        color: white;
+        background-color: #17a2b8;
+        border: none;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+    .btn-danger {
+        color: white;
+        background-color: #dc3545;
+        border: none;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const detailLinks = document.querySelectorAll('.btn-info');
+        detailLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                if (!confirm('Você deseja ver os detalhes desta pessoa?')) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        const rows = document.querySelectorAll('tr[data-id]');
+        rows.forEach(row => {
+            row.addEventListener('dblclick', function() {
+                const id = row.getAttribute('data-id');
+                window.location.href = `/Consulta/Detalhe/${id}`;
+            });
+        });
+    });
+</script>
