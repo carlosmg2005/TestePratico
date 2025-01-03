@@ -9,10 +9,8 @@ namespace TestePratico.Controllers
 {
     public class ConsultaController : Controller
     {
-        // Contexto da aplicação para acessar o banco de dados
         private readonly ApplicationDbContext _context;
 
-        // Construtor para inicializar o contexto
         public ConsultaController(ApplicationDbContext context)
         {
             _context = context;
@@ -23,13 +21,11 @@ namespace TestePratico.Controllers
         {
             try
             {
-                // Obter todas as pessoas do banco de dados
                 var pessoas = _context.Pessoas.ToList();
-                return View(pessoas); // Retorna a view com a lista de pessoas
+                return View(pessoas);
             }
             catch (Exception ex)
             {
-                // Exibir uma mensagem de erro em caso de falha
                 return View("Error", new ErrorViewModel
                 {
                     Message = "Ocorreu um erro ao carregar a lista de pessoas.",
@@ -41,21 +37,33 @@ namespace TestePratico.Controllers
         // Ação para exibir o formulário de criação de pessoa
         public IActionResult Criar()
         {
-            return View(); // Retorna a view de criação
+            return View();
         }
 
         // Ação para salvar uma nova pessoa
         [HttpPost]
         public IActionResult Criar(Pessoa pessoa)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Adicionar a nova pessoa ao contexto e salvar no banco
+                return View(pessoa); // Retorna a view caso os dados não sejam válidos
+            }
+
+            try
+            {
                 _context.Pessoas.Add(pessoa);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index)); // Redirecionar para a página de listagem
+                TempData["SuccessMessage"] = "Pessoa criada com sucesso!";
+                return RedirectToAction(nameof(Index));
             }
-            return View(pessoa); // Retornar a view caso os dados não sejam válidos
+            catch (DbUpdateException ex)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    Message = "Erro ao salvar no banco de dados.",
+                    Exception = ex
+                });
+            }
         }
 
         // Ação para exibir os detalhes de uma pessoa específica
@@ -64,9 +72,9 @@ namespace TestePratico.Controllers
             var pessoa = _context.Pessoas.Find(id);
             if (pessoa == null)
             {
-                return NotFound(); // Retorna 404 se a pessoa não for encontrada
+                return NotFound();
             }
-            return View(pessoa); // Retorna a view com os detalhes da pessoa
+            return View(pessoa);
         }
 
         // Ação para atualizar os detalhes de uma pessoa
@@ -75,31 +83,29 @@ namespace TestePratico.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(pessoa); // Retornar a view caso os dados não sejam válidos
+                return View(pessoa);
             }
 
-            // Buscar a entidade original no banco
             var pessoaDb = _context.Pessoas.Find(pessoa.PessoaId);
             if (pessoaDb == null)
             {
-                return NotFound(); // Retorna 404 se a pessoa não for encontrada
+                return NotFound();
             }
 
-            // Atualizar apenas os campos permitidos
             pessoaDb.NomeFantasia = pessoa.NomeFantasia;
+            pessoaDb.CnpjCpf = pessoa.CnpjCpf;
 
             try
             {
                 _context.SaveChanges();
-                ViewBag.Message = "Alterações salvas com sucesso!";
-                return View(pessoaDb); // Retorna a mesma view com a mensagem de sucesso
+                TempData["SuccessMessage"] = "Alterações salvas com sucesso!";
+                return RedirectToAction(nameof(Detalhe), new { id = pessoa.PessoaId });
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
-                // Tratar possíveis exceções durante o salvamento
                 return View("Error", new ErrorViewModel
                 {
-                    Message = "Erro ao salvar as alterações.",
+                    Message = "Erro ao atualizar no banco de dados.",
                     Exception = ex
                 });
             }
@@ -112,7 +118,7 @@ namespace TestePratico.Controllers
             var pessoa = _context.Pessoas.Find(id);
             if (pessoa == null)
             {
-                return NotFound(); // Retorna 404 se a pessoa não for encontrada
+                return NotFound();
             }
 
             try
@@ -120,9 +126,9 @@ namespace TestePratico.Controllers
                 _context.Pessoas.Remove(pessoa);
                 _context.SaveChanges();
                 TempData["SuccessMessage"] = "Pessoa excluída com sucesso!";
-                return RedirectToAction(nameof(Index)); // Redirecionar para a página de listagem
+                return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
                 return View("Error", new ErrorViewModel
                 {
